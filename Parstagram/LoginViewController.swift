@@ -14,7 +14,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var usernameField: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
         // Do any additional setup after loading the view.
     }
     
@@ -45,8 +45,12 @@ class LoginViewController: UIViewController {
                 print("Error: \(error?.localizedDescription)")
             }
         }
-
     }
+    
+    @IBAction func dismissKeyboard(_ sender: Any) {
+        view.endEditing(true)
+    }
+    
     /*
     // MARK: - Navigation
 
