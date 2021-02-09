@@ -20,4 +20,4 @@ No bonus features implemented
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://g.recordit.co/QXUwdD2Ciq.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='http://g.recordit.co/RWHL2NSRl9.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
