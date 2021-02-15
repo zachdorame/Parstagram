@@ -139,7 +139,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         // add a comment to a post
-        let post = posts[indexPath.row] // SECTION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        let post = posts[indexPath.section] // SECTION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         let comments = (post["comments"] as? [PFObject]) ?? []
         
         if indexPath.row == comments.count + 1 {
