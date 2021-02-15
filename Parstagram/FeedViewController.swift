@@ -14,14 +14,30 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     var posts = [PFObject]()
     var selectedPost: PFObject!
+    var refreshControl: UIRefreshControl!
     @IBOutlet weak var tableView: UITableView!
     
     let commentBar = MessageInputBar()
     var showCommentsBar = false
     
+    @objc func onRefresh(){
+        print("onRefresh() called")
+        let query = PFQuery(className: "Posts")
+        query.includeKeys(["author", "comments", "comments.author"])
+        query.limit = 20
+        
+        query.findObjectsInBackground { (posts, error) in
+            if posts != nil {
+                self.posts = posts!
+                self.tableView.reloadData()
+                self.refreshControl.endRefreshing()
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         
         commentBar.inputTextView.placeholder = "Add a comment..."
         commentBar.sendButton.title = "Post"
@@ -30,11 +46,14 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.delegate = self
         tableView.dataSource = self
         
-        
         tableView.keyboardDismissMode = .interactive
         // Do any additional setup after loading the view.
         let center = NotificationCenter.default
         center.addObserver(self, selector: #selector(keyBoardWillBeHidden(note:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(onRefresh), for: .valueChanged)
+        tableView.addSubview(refreshControl)
     }
     
     @objc func keyBoardWillBeHidden(note: Notification) {
@@ -139,7 +158,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         // add a comment to a post
-        let post = posts[indexPath.section] // SECTION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        let post = posts[indexPath.section]
         let comments = (post["comments"] as? [PFObject]) ?? []
         
         if indexPath.row == comments.count + 1 {
