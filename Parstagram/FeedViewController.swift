@@ -21,7 +21,6 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     var showCommentsBar = false
     
     @objc func onRefresh(){
-        print("onRefresh() called")
         let query = PFQuery(className: "Posts")
         query.includeKeys(["author", "comments", "comments.author"])
         query.limit = 20
